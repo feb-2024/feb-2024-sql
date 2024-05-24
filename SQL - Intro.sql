@@ -21,6 +21,7 @@ show databases;
 use book_management_system;
 
 show tables;
+
 select * from book_details;
 select * from author_details;
 select * from character_details;
