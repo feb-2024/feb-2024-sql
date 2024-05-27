@@ -25,3 +25,20 @@ show tables;
 select * from book_details;
 select * from author_details;
 select * from character_details;
+
+-- MySQL Datatypes
+-- CHAR(size) 				: fixed length string, size can be from 0 to 255
+-- VARCHAR(size) 			: variable length string, size can be from 0 to 65535
+-- BINARY(size)				: same as CHAR() but stores binary byte strings
+-- VARBINARY(size)  		: same as VARCHAR() but stores binary byte strings
+-- TINYBLOB					: for BLOB(Binary Large Objects). max length = 255 bytes
+-- BLOB						: max length = 65,535 bytes
+-- MEDIUMBLOB				: max length = 16,777,215 bytes
+-- LONGBLOB					: max length = 4,294,967,295 bytes
+-- TINYTEXT					: holds a string. max length = 255 characters
+-- TEXT(size)				: max length = 65,535 characters
+-- MEDIUMTEXT				: max length = 16,777,215 characters
+-- LONGTEXT					: max length = 4,294,967,295 characters
+-- ENUM(val1, val2, val3, ...) : a string object that can have only one value, chosen froma list of possible values.
+-- SET(val1, val2, val3, ...)  : a string object that can have 0 or more values, chosen from a list of possible values.
+
