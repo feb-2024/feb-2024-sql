@@ -5,9 +5,13 @@
 
 -- examples of scalar functions
 SELECT * FROM products;
+SELECT * FROM productlines;
 SELECT * FROM customers;
-select * from payments;
-select * from orders;
+SELECT * FROM payments;
+SELECT * FROM orders;
+SELECT * FROM orderdetails;
+SELECT * FROM offices;
+SELECT * FROM employees;
 
 -- string scalar functions
 SELECT productCode, productName, UCASE(productLine) FROM products; 
@@ -18,36 +22,50 @@ SELECT productCode, LEFT(productCode, 3) AS code, RIGHT(productCode, 4) AS regio
 SELECT productCode, productName, SUBSTR(productName, 6, 3), TRIM(SUBSTR(productName, 6, 3)) FROM products;
 
 -- numeric scalar functions
-select productCode, productName, buyPrice, ROUND(buyPrice, 0), ROUND(buyPrice, 1), FLOOR(buyPrice), CEIL(buyPrice) from products;
-select productCode, productName, buyPrice, power(buyPrice, 2), exp(buyPrice)from products;
+SELECT productCode, productName, buyPrice, ROUND(buyPrice, 0), ROUND(buyPrice, 1), FLOOR(buyPrice), CEIL(buyPrice) FROM products;
+SELECT productCode, productName, buyPrice, POWER(buyPrice, 2), EXP(buyPrice) FROM products;
 -- this function returns e^x, where x is the argument, and 'e' is Euler's constant, the base of the natural logarithms.
-select exp(1); --   2.7182818^2
+SELECT EXP(1); --   2.7182818^1
 
 -- date scalar functions
-select customerNumber, paymentDate, DAY(paymentDate), DAYNAME(paymentDate), WEEK(paymentDate), WEEKOFYEAR(paymentDate), (paymentDate), MONTHNAME(paymentDate), YEAR(paymentDate) from payments;
-select customerNumber, paymentDate, dayofweek(paymentDate), dayofmonth(paymentDate), dayofyear(paymentDate) from payments;
-desc payments;
-select customerNumber, paymentDate, datediff(current_date(), paymentDate) from payments;
+SELECT customerNumber, paymentDate, DAY(paymentDate), DAYNAME(paymentDate), WEEK(paymentDate), WEEKOFYEAR(paymentDate), MONTH(paymentDate), MONTHNAME(paymentDate), YEAR(paymentDate) FROM payments;
+SELECT customerNumber, paymentDate, DAYOFWEEK(paymentDate), DAYOFMONTH(paymentDate), DAYOFYEAR(paymentDate) FROM payments;
+DESC payments;
+SELECT customerNumber, paymentDate, DATEDIFF(CURRENT_DATE(), paymentDate) FROM payments;
 -- how quickly were the orders shipped?
-select orderNumber, orderDate, shippedDate, datediff(shippedDate, orderDate) from orders;
+SELECT orderNumber, orderDate, shippedDate, DATEDIFF(shippedDate, orderDate) FROM orders;
 -- assuming the return date is within 20 days from orderDate, dispay the return date for each order
-select orderNumber, orderDate, date_add(orderDate, Interval 20 day) from orders;
+SELECT orderNumber, orderDate, DATE_ADD(orderDate, INTERVAL 20 DAY) FROM orders;
 
 
-select orderNumber, orderDate, date_format(orderDate, '%Y') from orders;
-select orderNumber, orderDate, date_format(orderDate, '%D %b, %Y') from orders;
-select orderNumber, orderDate, date_format(orderDate, '%D %M, %y') from orders;
+SELECT orderNumber, orderDate, DATE_FORMAT(orderDate, '%Y') FROM orders;
+SELECT orderNumber, orderDate, DATE_FORMAT(orderDate, '%D %b, %Y') FROM orders;
+SELECT orderNumber, orderDate, DATE_FORMAT(orderDate, '%D %M, %y') FROM orders;
 
 -- advanced functions
-select orderNumber, orderDate, comments, ifnull(comments, 'N/A') from orders;
+SELECT orderNumber, orderDate, comments, IFNULL(comments, 'N/A') FROM orders;
 
 -- if the order is shipped in 2 days, display shipped early
 -- if the order is shipped in 3 to 4, display shipped
 -- if the order is shipped in 5 or more days, display shipped late
-select orderNumber, orderDate, shippedDate, datediff(shippedDate, orderDate), 
-case
-	when datediff(shippedDate, orderDate) <=2 then 'Shipped early'
-    when datediff(shippedDate, orderDate) >2 && datediff(shippedDate, orderDate)<=4 then 'Shipped'
-    when datediff(shippedDate, orderDate) >4 then 'Shipped late'
-end as 'shipped status'
-from orders;
+SELECT orderNumber, orderDate, shippedDate, DATEDIFF(shippedDate, orderDate), 
+CASE
+	WHEN DATEDIFF(shippedDate, orderDate) <=2 THEN 'Shipped early'
+    WHEN DATEDIFF(shippedDate, orderDate) >2 && DATEDIFF(shippedDate, orderDate)<=4 THEN 'Shipped'
+    WHEN DATEDIFF(shippedDate, orderDate) >4 THEN 'Shipped late'
+END AS 'shipped status'
+FROM orders;
+
+-- aggregate functions
+-- find the count of products
+-- Sandhya
+SELECT COUNT(productCode) FROM products;
+-- find the total patment received
+SELECT SUM(amount) FROM payments;
+-- find out how many offices are there?
+-- Ankit Raj 
+SELECT COUNT(officeCode) FROM offices;
+-- find out the average amount received
+SELECT AVG(amount) FROM payments;
+-- find out the average amount received in the year 2004
+SELECT AVG(amount) AS average_amount_received FROM payments WHERE YEAR(paymentDate) = 2004;
