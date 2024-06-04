@@ -183,6 +183,7 @@ CREATE INDEX idx_person_city_person_lastname ON person_details(person_city, pers
 
 ALTER TABLE person_details DROP INDEX idx_person_city_person_lastname;
 
+SHOW INDEXES FROM person_details;
 -- auto increment
 
 CREATE TABLE color_details (
@@ -190,8 +191,8 @@ CREATE TABLE color_details (
     color_name VARCHAR(20)
 );
 
-insert into color_details(color_name) values ('RED');
-insert into color_details(color_name) values ('BLUE');
-insert into color_details(color_name) values ('GREEN');
+INSERT INTO color_details(color_name) VALUES ('RED');
+INSERT INTO color_details(color_name) VALUES ('BLUE');
+INSERT INTO color_details(color_name) VALUES ('GREEN');
 
-select * from color_details;
+SELECT * FROM color_details;
