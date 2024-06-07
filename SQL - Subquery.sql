@@ -1,3 +1,5 @@
+-- SUBQUERY IN WHERE CONDITION
+-- -----------------------------
 USE classicmodels;
 SELECT * FROM products;
 -- display productCode, productName and buyPrice
@@ -70,3 +72,33 @@ SELECT customerNumber, customerName, country FROM customers WHERE customerNumber
 SELECT DISTINCT salesRepEmployeeNumber FROM customers WHERE salesRepEmployeeNumber IS NOT NULL;
 SELECT employeeNumber FROM employees;
 SELECT employeeNumber, CONCAT(firstName, ' ', lastName) FROM employees WHERE employeeNumber NOT IN (SELECT DISTINCT salesRepEmployeeNumber FROM customers WHERE salesRepEmployeeNumber IS NOT NULL);
+
+-- SUBQUERY IN FROM CLAUSE
+-- ------------------------
+-- display the order with maximum items and minimum items
+SELECT orderNumber, COUNT(productCode) AS items FROM orderdetails GROUP BY orderNumber;
+SELECT MAX(items), MIN(items) FROM (SELECT orderNumber, COUNT(productCode) AS items FROM orderdetails GROUP BY orderNumber) AS countitems;
+
+-- CORRELATED SUBQUERY
+-- --------------------
+-- display productCode, productName and buyPrice where buyPrice < average buyPrice
+SELECT productCode, productName, buyPrice FROM products WHERE buyPrice < (SELECT AVG(buyPrice) FROM products);
+
+-- display productCode, productName and buyPrice of products whose buyPrices are greater than the average buyPrice of all products in each productLine
+SELECT productCode, productName, buyPrice FROM products p1 WHERE buyPrice > (SELECT AVG(buyPrice) FROM products p2 WHERE p2.productLine = p1.productLine);
+
+SELECT AVG(buyPrice) FROM products p2 WHERE p2.productLine = p1.productLine; -- inner query/ sub query is not independent, hence error
+SELECT * FROM products;
+SELECT AVG(buyPrice) FROM products WHERE productLine = 'Classic Cars';
+
+-- display customers info for customers whose creditLImit is more than the average credit limit of customers in that city 
+SELECT * FROM customers;
+SELECT customerNumber, customerName, city FROM customers c1 WHERE creditLimit > (SELECT AVG(creditLimit) FROM customers c2 WHERE c2.city = c1.city);
+
+-- display orderNumber, orderDate, customerNumber from orders which has price of a product less than 40
+SELECT orderNumber, orderDate, customerNumber FROM orders o WHERE EXISTS (SELECT productCode FROM orderdetails od WHERE od.orderNumber = o.orderNumber AND priceEach < 40);
+SELECT orderNumber, orderDate, customerNumber FROM orders o WHERE EXISTS (SELECT 5 FROM orderdetails od WHERE od.orderNumber = o.orderNumber AND priceEach < 40);
+
+SELECT 5, productCode FROM orderdetails od WHERE priceEach < 40;
+SELECT * FROM orders;
+SELECT * FROM orderdetails;
